@@ -7,6 +7,19 @@
 
    Every Pokémon goes through the calculator's own addSavePokemon(), exactly like its Upload Save did, so sets,
    evolutions (matched by PID, IVs and met level) and the dead boxes (420+) behave the same. */
+(function () {                                  // softer dark mode: on whenever the calculator's dark stylesheet is
+	var dark = document.getElementById('dark-theme-styles');
+	function sync() { document.documentElement.classList.toggle('pk-soft-dark', !!dark && !dark.disabled); }
+	if (dark) {
+		sync();
+		['setDarkTheme', 'toggleTheme'].forEach(function (name) {
+			var original = window[name];
+			if (typeof original === 'function') window[name] = function () { var r = original.apply(this, arguments); sync(); return r; };
+		});
+		new MutationObserver(sync).observe(dark, {attributes: true, attributeFilter: ['disabled']});
+	}
+})();
+
 (function () {
 	var RAM = 0x02000000, SAVE_PTR = 0x02101D40, GAME_CODE = 0x023FFE0C;       // Platinum Kaizo (JAK7) memory
 	var SMALL = 0xCF2C, LARGE_END = 0x1F110, SECOND = 0x40000, MAGIC = 0x20060623;

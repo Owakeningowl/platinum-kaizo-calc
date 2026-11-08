@@ -6,8 +6,8 @@
 The page is https://pkcalc.anastarawneh.com/ exactly as it is served today, with <base href> pointing at it,
 so every script, stylesheet, image and trainer set still comes from the calculator's own site and stays
 current. Removed: the Sync (Lua) and Upload Save buttons (js/pk-save-link.js takes them out once the page
-has built them), the Lua Script setting and the Lua Script link. Added: js/pk-save-link.js and
-css/pk-save-link.css, loaded from SELF_URL (default: this repository's GitHub Pages address).
+has built them), the Lua Script setting and the Lua Script link. Added: js/pk-save-link.js, css/pk-save-link.css and
+css/pk-soft-dark.css (a softer dark mode), loaded from SELF_URL (default: this repository's GitHub Pages address).
 """
 import hashlib
 import os
@@ -40,7 +40,10 @@ def main(self_url):
     html = lua.sub('', html)
     html = once(html, '        <li><a href="https://github.com/anastarawneh/PKLuaScript/releases/latest" '
                       'class="links-lighten" target="_blank">Lua Script</a></li>\n', '')
-    html = once(html, '</head>', f'    <link type="text/css" rel="stylesheet" href="{self_url}css/pk-save-link.css?v={version("css/pk-save-link.css")}" />\n</head>')
+    html = once(html, '</head>', f'    <link type="text/css" rel="stylesheet" href="{self_url}css/pk-soft-dark.css?v={version("css/pk-soft-dark.css")}" />\n'
+                                 f'    <link type="text/css" rel="stylesheet" href="{self_url}css/pk-save-link.css?v={version("css/pk-save-link.css")}" />\n'
+                                 "    <script>if (localStorage.getItem('darkTheme') === 'true') document.documentElement.classList.add('pk-soft-dark');</script>\n"
+                                 '</head>')
     html = once(html, '</body>', f'    <script src="{self_url}js/pk-save-link.js?v={version("js/pk-save-link.js")}"></script>\n</body>')
 
     with open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8') as f:

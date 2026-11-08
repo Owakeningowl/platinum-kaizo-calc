@@ -21,11 +21,11 @@
   color: #111;
 }
 
-.dark-theme #pk-link-bar button,
-.dark-theme #pk-link-bar .pk-pick {
-  background: #333;
-  color: #eee;
-  border-color: #666;
+html.pk-soft-dark #pk-link-bar button,
+html.pk-soft-dark #pk-link-bar .pk-pick {
+  background: var(--button-color);
+  color: var(--text);
+  border-color: #4b5262;
 }
 
 #pk-link-bar button:hover,
@@ -44,6 +44,14 @@
   color: #2f8f55;
 }
 
+html.pk-soft-dark #pk-status {
+  color: #8fc9a4;
+}
+
 #pk-status.pk-bad {
   color: #d0504a;
+}
+
+html.pk-soft-dark #pk-status.pk-bad {
+  color: #f0908a;
 }

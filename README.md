@@ -1,7 +1,8 @@
 # Platinum Kaizo calc with a live save link
 
 Unofficial copy of the [Platinum Kaizo Damage Calculator](https://pkcalc.anastarawneh.com/) by anastarawneh,
-with one change: its Sync (Lua) and Upload Save are replaced by **Link save**, which keeps Team / Box
+with two changes: a softer dark mode (slate greys, gentler text and borders), and its Sync (Lua) and
+Upload Save are replaced by **Link save**, which keeps Team / Box
 updated from your save without a Lua script. Everything else (the calculator, trainer sets, dex, settings)
 loads straight from the official site, so it stays current.
 
