@@ -1,0 +1,6 @@
+tools/__pycache__/
+.DS_Store
+*.sav
+*.dsv
+*.ds[0-9]
+*.dat
