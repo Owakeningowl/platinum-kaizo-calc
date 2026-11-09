@@ -44,6 +44,22 @@ OWN_STORAGE = '''(function () {
 })();'''
 
 
+# The calculator switches tabs with window.location = '#/dex' (and the like, about 25 places). With <base href> on the
+# official site, the browser resolves that to https://pkcalc.anastarawneh.com/#/dex and leaves this copy. This catches
+# exactly those navigations (official address + a #/ fragment) and makes the same fragment change on this page.
+STAY_HERE = '''(function () {
+  if (!window.navigation) return;
+  var home = new URL(%r);
+  navigation.addEventListener('navigate', function (e) {
+    var to = new URL(e.destination.url);
+    if (to.origin === home.origin && to.pathname === home.pathname && to.hash && e.cancelable) {
+      e.preventDefault();
+      location.hash = to.hash;
+    }
+  });
+})();'''
+
+
 def version(path):
     return hashlib.sha1(open(os.path.join(ROOT, path), 'rb').read()).hexdigest()[:8]
 
@@ -57,7 +73,8 @@ def main(self_url):
     req = urllib.request.Request(LIVE, headers={'User-Agent': 'platinum-kaizo-calc build'})
     html = urllib.request.urlopen(req, timeout=30).read().decode('utf-8')
 
-    html = once(html, '<head>\n', f'<head>\n    <base href="{LIVE}">\n    <script>{OWN_STORAGE}</script>\n')
+    html = once(html, '<head>\n', f'<head>\n    <base href="{LIVE}">\n    <script>{OWN_STORAGE}</script>\n'
+                                   f'    <script>{STAY_HERE % LIVE}</script>\n')
     lua = re.compile(r'\s*<p class="label" align="center">Lua Script</p>\s*<span class="starterSelection"'
                      r'.*?</label>\s*</span>\s*<hr />', re.S)
     assert len(lua.findall(html)) == 1, 'the Lua Script setting moved'

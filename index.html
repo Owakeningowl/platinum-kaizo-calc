@@ -24,6 +24,17 @@
   });
   try { Object.defineProperty(window, 'localStorage', {configurable: true, get: function () { return store; }}); } catch (e) {}
 })();</script>
+    <script>(function () {
+  if (!window.navigation) return;
+  var home = new URL('https://pkcalc.anastarawneh.com/');
+  navigation.addEventListener('navigate', function (e) {
+    var to = new URL(e.destination.url);
+    if (to.origin === home.origin && to.pathname === home.pathname && to.hash && e.cancelable) {
+      e.preventDefault();
+      location.hash = to.hash;
+    }
+  });
+})();</script>
     <meta charset="UTF-8" />
     <title>Platinum Kaizo Damage Calculator</title>
 	 <link rel="icon" type="image/x-icon" href="./img/favicon.png">
