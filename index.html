@@ -3,6 +3,27 @@
 
 <head>
     <base href="https://pkcalc.anastarawneh.com/">
+    <script>(function () {
+  var real = window.localStorage, P = 'pkcalc:';
+  function keys() { var out = []; for (var i = 0; i < real.length; i++) { var k = real.key(i); if (k && k.indexOf(P) === 0) out.push(k.slice(P.length)); } return out; }
+  var api = {
+    getItem: function (k) { return real.getItem(P + k); },
+    setItem: function (k, v) { real.setItem(P + k, String(v)); },
+    removeItem: function (k) { real.removeItem(P + k); },
+    clear: function () { keys().forEach(function (k) { real.removeItem(P + k); }); },
+    key: function (n) { var k = keys()[n]; return k === undefined ? null : k; },
+    get length() { return keys().length; }
+  };
+  var store = new Proxy(api, {
+    get: function (t, k) { if (k in t) return typeof t[k] === 'function' ? t[k].bind(t) : t[k]; if (typeof k !== 'string') return undefined; var v = real.getItem(P + k); return v === null ? undefined : v; },
+    set: function (t, k, v) { real.setItem(P + k, String(v)); return true; },
+    has: function (t, k) { return k in t || real.getItem(P + String(k)) !== null; },
+    deleteProperty: function (t, k) { real.removeItem(P + String(k)); return true; },
+    ownKeys: function () { return keys(); },
+    getOwnPropertyDescriptor: function (t, k) { var v = real.getItem(P + String(k)); return v === null ? undefined : {value: v, enumerable: true, configurable: true, writable: true}; }
+  });
+  try { Object.defineProperty(window, 'localStorage', {configurable: true, get: function () { return store; }}); } catch (e) {}
+})();</script>
     <meta charset="UTF-8" />
     <title>Platinum Kaizo Damage Calculator</title>
 	 <link rel="icon" type="image/x-icon" href="./img/favicon.png">
